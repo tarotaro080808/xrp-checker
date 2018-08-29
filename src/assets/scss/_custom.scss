@@ -1,0 +1,39 @@
+// Here you can add other styles
+.sidebar .nav-link {
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .sidebar-show {
+    cursor: pointer;
+  }
+}
+@media (max-width: 767px) {
+  body {
+    font-size: 0.8rem;
+  }
+  .card-body {
+    padding: 4%;
+  }
+  .card-title {
+    font-size: 1.3rem;
+  }
+  .form-control-lg {
+    font-size: 1rem;
+    padding: 3%;
+  }
+  .btn {
+    font-size: inherit;
+  }
+  .btn-lg, .btn-group-lg > .btn {
+    font-size: .9rem;
+  }
+  .text-value {
+    font-size: .9rem;
+  }
+  h5, .h5 {
+    font-size: .9rem;
+  }
+  .font-xs {
+    font-size: .8rem;
+  }
+}
