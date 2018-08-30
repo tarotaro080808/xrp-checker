@@ -8,7 +8,8 @@
       "updatePlan": "アップデート計画",
       "termsOfService": "利用規約",
       "donate": "寄付(XRPTipBot)",
-      "separate": ">"
+      "separate": ">",
+      "timeline": "チャートタイムライン"
     },
     "message": {
       "walletSetting": "ウォレット設定",
@@ -71,6 +72,10 @@
       "urlValue1": "No.2260 所得税の税率",
       "url1": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/2260.htm",
       "urlValue2": "Twitter"
+    },
+    "timeline": {
+      "title": "チャートタイムライン",
+      "description": "5秒毎に各取引所の最新価格がアップデートされます。どの取引所、通貨が先に動くか可視化します。"
     }
   },
 
@@ -83,7 +88,8 @@
       "updatePlan": "Update Plan",
       "termsOfService": "Terms of service",
       "donate": "Donate (XRPTipBot)",
-      "separate": ">"
+      "separate": ">",
+      "timeline": "Chart Timeline"
     },
     "message": {
       "walletSetting": "Wallet Settings",
@@ -146,6 +152,10 @@
       "urlValue1": "National Tax Agency JAPAN",
       "url1": "https://www.nta.go.jp/english/index.htm",
       "urlValue2": "Twitter"
+    },
+    "timeline": {
+      "title": "Chart Timeline",
+      "description": "The latest price of each exchange will be updated every 5 seconds. It will visualize which exchange, currency will move first."
     }
   },
   "de": { 
@@ -157,7 +167,8 @@
       "updatePlan": "Roadmap", 
       "termsOfService": "Servicebedingungen", 
       "donate": "Spenden (XRPTipBot)", 
-      "separate": ">"
+      "separate": ">",
+      "timeline": "Diagrammzeitachse"
     }, 
     "message": {
       "walletSetting": "Wallet Einstellungen", 
@@ -220,6 +231,10 @@
       "urlValue1": "National Tax Agency JAPAN", 
       "url1": "https://www.nta.go.jp/english/index.htm", 
       "urlValue2": "Twitter" 
+    },
+    "timeline": {
+      "title": "Diagrammzeitachse",
+      "description": "Der letzte Preis jedes Austauschs wird alle 5 Sekunden aktualisiert. Es wird visualisiert, welcher Tausch, Währung zuerst bewegt wird."
     }
   }
 }

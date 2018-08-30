@@ -28,6 +28,21 @@ export default {
       icon: 'icon-doc'
     },
     {
+      name: 'チャートタイムライン',
+      url: 'timeline',
+      icon: 'cui-chart',
+      tab: 'timeline'
+    },
+    {
+      title: true,
+      name: 'About',
+      class: '',
+      wrapper: {
+        element: '',
+        attributes: {}
+      }
+    },
+    {
       name: 'アップデート計画',
       tab: 3,
       url: '/',

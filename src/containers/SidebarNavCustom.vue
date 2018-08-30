@@ -27,7 +27,7 @@
           <li v-bind:key="index" data-v-1282947e="" class="nav-item">
             <div data-v-1282947e="">
               <div class="nav-link" v-on:click="tabChange(2)">
-                <i class="nav-icon icon-doc"></i> {{ $t('menu.transaction') }}
+                <i class="nav-icon cui-clipboard icons"></i> {{ $t('menu.transaction') }}
               </div>
             </div>
           </li>
@@ -57,7 +57,7 @@
           <li v-bind:key="index" data-v-1282947e="" class="nav-item">
             <div data-v-1282947e="">
               <div class="nav-link" v-on:click="tabChange(5)">
-                <i class="nav-icon icon-doc"></i> {{ $t('menu.profitEstimate') }}
+                <i class="nav-icon cui-puzzle icons"></i> {{ $t('menu.profitEstimate') }}
               </div>
             </div>
           </li>
@@ -67,7 +67,17 @@
           <li v-bind:key="index" data-v-1282947e="" class="nav-item">
             <div data-v-1282947e="">
               <a class="nav-link" :href="item.url" target="_blank">
-                <i class="nav-icon icon-doc"></i> {{ $t('menu.donate') }}
+                <i class="nav-icon cui-user icons"></i> {{ $t('menu.donate') }}
+              </a>
+            </div>
+          </li>
+        </template>
+
+        <template v-else-if="item.tab == 'timeline'">
+          <li v-bind:key="index" data-v-1282947e="" class="nav-item">
+            <div data-v-1282947e="">
+              <a class="nav-link" v-on:click="subpage(item.url)" target="_blank">
+                <i class="nav-icon cui-chart icons"></i> {{ $t('menu.timeline') }}
               </a>
             </div>
           </li>
@@ -175,8 +185,43 @@ export default {
     },
     tabChange: function (state) {
       this.$store.commit('setTab', state)
+      let lang
+
+      if (this.$i18n.locale === 'en') {
+        lang = 'en/'
+      } else if (this.$i18n.locale === 'de') {
+        lang = 'de/'
+      } else {
+        lang = ''
+      }
+
+      if (this.$route.meta.label === 'タイムライン') {
+        if (this.$route.query.q !== undefined) {
+          this.$router.push('/' + lang + '?q=' + this.$route.query.q)
+        } else {
+          this.$router.push('/' + lang)
+        }
+      }
       if (window.innerWidth < 769) {
         this.toggle();
+      }
+    },
+
+    subpage: function (url) {
+      let lang
+
+      if (this.$i18n.locale === 'en') {
+        lang = 'en/'
+      } else if (this.$i18n.locale === 'de') {
+        lang = 'de/'
+      } else {
+        lang = ''
+      }
+
+      if (this.$route.query.q !== undefined) {
+        this.$router.push('/' + lang + url + '?q=' + this.$route.query.q)
+      } else {
+        this.$router.push('/' + lang + url)
       }
     }
   }
