@@ -1,5 +1,8 @@
 ## [vue](./README.md) version `changelog`
 
+##### `v1.2.2`
+- Add Chart Timeline
+
 ##### `v1.2.1`
 - Fix Translation of DE
 

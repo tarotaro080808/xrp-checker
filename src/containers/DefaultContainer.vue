@@ -6,13 +6,13 @@
         XRP Checker
       </b-link>
       <SidebarToggler class="d-md-down-none" display="lg" />
-      <b-navbar-nav class="d-md-down-none">
+      <!-- <b-navbar-nav class="d-md-down-none">
         <b-nav-item class="px-2" v-on:click="tabChange(1)">{{ $t('menu.balanceAsset') }}</b-nav-item>
         <b-nav-item class="px-2" v-on:click="tabChange(2)">{{ $t('menu.transaction') }}</b-nav-item>
         <b-nav-item class="px-2" v-on:click="tabChange(5)">{{ $t('menu.profitEstimate') }}</b-nav-item>
         <b-nav-item class="px-2" v-on:click="tabChange(3)">{{ $t('menu.updatePlan') }}</b-nav-item>
         <b-nav-item class="px-2" v-on:click="tabChange(4)">{{ $t('menu.termsOfService') }}</b-nav-item>
-      </b-navbar-nav>
+      </b-navbar-nav> -->
       <b-navbar-nav class="ml-auto">
         <b-dropdown size="md" id="ddown_secondary" text="Language" variant="light" class="language-switcher mr-3" v-if="getLang() == 'en'">
           <b-dropdown-item href="#">English (Current)</b-dropdown-item>
@@ -107,7 +107,9 @@ export default {
   },
   methods: {
     getName () {
-      if (this.$store.state.tab === 1) {
+      if (this.$route.meta.label === 'タイムライン') {
+        this.pageName = this.$t("menu.topPage") + " " + this.$t("menu.separate") + " " + this.$t("menu.timeline")
+      } else if (this.$store.state.tab === 1) {
         this.pageName = this.$t("menu.topPage") + " " + this.$t("menu.separate") + " " + this.$t("menu.balanceAsset")
       } else if (this.$store.state.tab === 2) {
         this.pageName = this.$t("menu.topPage") + " " + this.$t("menu.separate") + " " + this.$t("menu.transaction")
@@ -126,18 +128,24 @@ export default {
     changeLang (lang) {
       let res
       let param = ''
+      let url = ''
+
+      if (this.$route.meta.label === 'タイムライン') {
+        url = 'timeline'
+      }
+      
       if (this.$route.query.q !== undefined) {
         param = "?q="+this.$route.query.q
       }
       if (lang == 'en') {
         // 英語
-        res = "/en/" + param
+        res = "/en/" + url + param
 
       } else if (lang == 'de') {
-        res = "/de/" + param
+        res = "/de/" + url + param
 
       } else if (lang == 'ja') {
-        res = "/" + param
+        res = "/" + url + param
 
       } else {
         res = "#"
@@ -156,6 +164,9 @@ export default {
 
     tabChange: function (state) {
       this.$store.commit('setTab', state)
+      if (this.$route.meta.label === 'タイムライン') {
+        this.$router.push('/')
+      }
     },
     onSwipeRight: function () {
       if (window.innerWidth < 769) {
