@@ -1,5 +1,8 @@
 ## [vue](./README.md) version `changelog`
 
+##### `v1.2.1`
+- Fix Translation of DE
+
 ##### `v1.2.0`
 - 機能 英語対応
 - 機能 ドイツ語対応
