@@ -152,33 +152,33 @@
     "menu": { 
       "topPage": "Startseite", 
       "balanceAsset": "Konto- / Vermögensstatus", 
-      "transaction": "Transaktion", 
+      "transaction": "Transaktionen", 
       "profitEstimate": "Gewinneinschätzung (Ohne Steuern)", 
-      "updatePlan": "Plan aktualisieren", 
+      "updatePlan": "Roadmap", 
       "termsOfService": "Servicebedingungen", 
       "donate": "Spenden (XRPTipBot)", 
       "separate": ">"
     }, 
     "message": {
       "walletSetting": "Wallet Einstellungen", 
-      "walletSettingDesctiption": "Bitte geben Sie hier die Ripple-Adresse ein (beginnend mit r) oder die Stückanzahl. {Br} Um mehrere Adressen zu setzen, können Sie diese mit einem Leerschlag {mark} trennen", 
+      "walletSettingDesctiption": "Bitte geben Sie hier die Ripple-Adresse  ein (beginnend mit r) oder die Stückzahl. {Br} Um mehrere Adressen zu  setzen, können Sie diese mit einem {mark} trennen", 
       "mark": "Leerschlag", 
       "btnLabelSubmit": "Hinzufügen", 
       "gettingWalletBalance": "Lädt...", 
       "totalBalance": "Gesamtsaldo", 
-      "walletList": "Wallet Liste", 
+      "walletList": "Wallets", 
       "exchanges": "Exchanges", 
       "rate": "Kurs", 
-      "asset": "Anlage", 
+      "asset": "Anlagevermögen", 
       "assetManagement": "Asset Management (nur JPY)", 
       "amount": "Betrag", 
       "transactionHistory": "Transaktionshistorie", 
       "loadAdditional": "Zusätzliche Werte laden" 
     },
     "info": {
-      "termsOfService1": "Dieser Dienst nutzt die von Ripple und jedem virtuellen Währungsexchange zur Verfügung gestellten APIs. {br} Wenn die API nicht verwendet werden kann (einschließlich Serverausfall), wird die Verwendung dieses Dienstes eingeschränkt.", 
-      "termsOfService2": "Wir speichern die Wallet-Adresse nicht in der Datenbank. Darüber hinaus speichern wir keine Informationen, welche Einzelpersonen identifizieren können.", 
-      "termsOfService3": "Wir führen die Zugriffsanalyse von Google Analytics ein."
+      "termsOfService1": "Dieser Dienst nutzt die von Ripple und jedem  virtuellen Währungsexchange zur Verfügung gestellten APIs. {br} Wenn die  API nicht verwendet werden kann (einschließlich Serverausfall), wird  die Verwendung dieses Dienstes eingeschränkt.", 
+      "termsOfService2": "Wir speichern die Wallet-Adresse nicht in der  Datenbank. Darüber hinaus speichern wir keine Informationen, welche  Einzelpersonen identifizieren können.", 
+      "termsOfService3": "Wir werden die Zugriffsanalyse von Google Analytics einführen."
     }, 
     "memo": {
       "task": "Aufgabe", 
@@ -197,9 +197,9 @@
     }, 
     "tax": {
       "description": "{d1}{br}{d2}{br}{d3}", 
-      "description1": "Anzahl XRP einfügen. Nur Zaheln können eingesetzt werden.", 
+      "description1": "Anzahl XRP einfügen. Nur Zahlen können eingesetzt werden.", 
       "description2": "Wenn Sie eine Schreibadresse festgelegt haben, wird der Gesamtbetrag automatisch festgelegt (Grün). ", 
-      "description3": "Wenn Sie die Hinzufügen-Taste drücken, wird die Menge gespeichert. Mehrere Sätze sind möglich. Sie können diese einzeln durh klicken auf das \"X\" löschen. Um Die Einstellungen zurückzusetzen drücken Sie bitte die entsprechende Taste.", 
+      "description3": "Wenn Sie die Hinzufügen-Taste drücken, wird die Menge  gespeichert. Mehrere Sätze sind möglich. Sie können diese einzeln durh  klicken auf das \"X\" löschen. Um Die Einstellungen zurückzusetzen drücken  Sie bitte die entsprechende Taste.", 
       "validation": "Dieser Wert ist bereits registiert oder eine ungültige Eingabe...", 
       "reset": "Zurücksetzen", 
       "title": "Aktueller Anlagewert (Gewinn nach Steuern)", 
@@ -208,7 +208,7 @@
       "inputPlaceholder": "Anzahl einfügen", 
       "setAmount": "Betrag hinzufügen", 
       "xrp": "XRP Stückpreis", 
-      "asset": "Anlage", 
+      "asset": "Anlagewert", 
       "tax": "Steuern", 
       "profit": "Gewinn", 
       "amount": "Saldo", 
@@ -216,9 +216,9 @@
       "residentsTax": "Einwohnersteuer", 
       "totalTax": "Steuertotal", 
       "set": "Festlegen", 
-      "attention": "* Indem Sie auf die Überschriftszeile klicken, können Sie sortieren. {br} * Bezugsquelle für die Berechnung der Einkommensteuer: {a1} {br} * Berechnungsmethode des Wohnsitzes: Aktiva x 10% (Abzug wird nicht berücksichtigt). {Br} * Bitte zeigen Sie von {a2} an, wenn die Berechnung falsch ist.", 
+      "attention": "* Indem Sie auf die Überschriftszeile klicken, können Sie  sortieren. {br} * Bezugsquelle für die Berechnung der Einkommensteuer:  {a1} {br} * Berechnungsmethode des Wohnsitzes: Aktiva x 10% (Abzug wird  nicht berücksichtigt). {br} * Bitte zeigen Sie von {a2} an, wenn die  Berechnung falsch ist.", 
       "urlValue1": "National Tax Agency JAPAN", 
-      "url1": "https://www.nta.go.jp/english/index.htm … …", 
+      "url1": "https://www.nta.go.jp/english/index.htm", 
       "urlValue2": "Twitter" 
     }
   }
