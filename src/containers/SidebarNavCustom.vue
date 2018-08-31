@@ -234,7 +234,7 @@ export default {
     height: 100%;
     margin: auto;
   }
-    .sidebar .sidebar-nav {
+  .sidebar .sidebar-nav {
     width: 230px;
   }
   .sidebar .nav {

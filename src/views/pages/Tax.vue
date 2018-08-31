@@ -46,7 +46,7 @@
         </b-row>
       </b-card>
 
-      <TaxTable v-if="lists.length || totalBalanceLocal" :value="lists" :totalBalanceLocal="totalBalanceLocal" ref="taxtable1" />
+      <TaxTable v-if="lists.length && totalBalanceFlg" :value="lists" :totalBalanceLocal="totalBalanceLocal" ref="taxtable1" />
 
     </div>
   </div>
@@ -66,6 +66,7 @@ export default {
     return {
       balance: null,
       totalBalanceLocal: null,
+      totalBalanceFlg: false,
       lists: [],
 
       dismissSecs: 1.5,
@@ -113,6 +114,7 @@ export default {
     }
     BigNumber.config({FORMAT: format})
     this.totalBalanceLocal = new BigNumber(this.totalBalance, 10).toFormat()
+    this.totalBalanceFlg = true
   },
 
   methods: {

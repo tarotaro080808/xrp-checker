@@ -9,48 +9,48 @@
         </b-col>
 
         <b-col sm="4">
-          <div class="clearfix mt-3">
+          <div class="clearfix mt-2">
             <span class="">{{bitbank.label}}</span>
             <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
-              <input type="checkbox" class="switch-input" :checked="bitbank.flg" v-on:click="changeToggle(bitbank)">
+              <input type="checkbox" class="switch-input" :checked="checkHidden(bitbank.hidden)" v-on:click="changeToggle(bitbank)">
               <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
             </label>
           </div>
-          <div class="clearfix mt-3">
+          <div class="clearfix mt-2">
             <span class="">{{poloniex.label}}</span>
             <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
-              <input type="checkbox" class="switch-input" :checked="poloniex.flg" v-on:click="changeToggle(poloniex)">
+              <input type="checkbox" class="switch-input" :checked="checkHidden(poloniex.hidden)" v-on:click="changeToggle(poloniex)">
               <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
             </label>
           </div>
-          <div class="clearfix mt-3">
+          <div class="clearfix mt-2">
             <span class="">{{bittrex.label}}</span>
             <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
-              <input type="checkbox" class="switch-input" :checked="bittrex.flg" v-on:click="changeToggle(bittrex)">
+              <input type="checkbox" class="switch-input" :checked="checkHidden(bittrex.hidden)" v-on:click="changeToggle(bittrex)">
               <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
             </label>
           </div>
         </b-col>
 
         <b-col sm="4">
-          <div class="clearfix mt-3">
+          <div class="clearfix mt-2">
             <span class="">{{poloniexBTC.label}}</span>
             <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
-              <input type="checkbox" class="switch-input" :checked="poloniexBTC.flg" v-on:click="changeToggle(poloniexBTC)">
+              <input type="checkbox" class="switch-input" :checked="checkHidden(poloniexBTC.hidden)" v-on:click="changeToggle(poloniexBTC)">
               <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
             </label>
           </div>
-          <div class="clearfix mt-3">
+          <div class="clearfix mt-2">
             <span class="">{{bitfinexBTC.label}}</span>
             <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
-              <input type="checkbox" class="switch-input" :checked="bitfinexBTC.flg" v-on:click="changeToggle(bitfinexBTC)">
+              <input type="checkbox" class="switch-input" :checked="checkHidden(bitfinexBTC.hidden)" v-on:click="changeToggle(bitfinexBTC)">
               <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
             </label>
           </div>
-          <div class="clearfix mt-3">
+          <div class="clearfix mt-2">
             <span class="">{{coincheckBTC.label}}</span>
             <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
-              <input type="checkbox" class="switch-input" :checked="coincheckBTC.flg" v-on:click="changeToggle(coincheckBTC)">
+              <input type="checkbox" class="switch-input" :checked="checkHidden(coincheckBTC.hidden)" v-on:click="changeToggle(coincheckBTC)">
               <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
             </label>
           </div>
@@ -87,7 +87,7 @@ export default {
         diffTable: [],
         initVal: 0,
         color: "#1ac2a6",
-        flg: 1
+        hidden: false
       },
       poloniex: {
         label: "Poloniex(XRP/BTC)",
@@ -96,7 +96,7 @@ export default {
         diffTable: [],
         initVal: 0,
         color: "#f86c6b",
-        flg: 1
+        hidden: false
       },
       poloniexBTC: {
         label: "Poloniex(BTC/USDT)",
@@ -105,7 +105,7 @@ export default {
         diffTable: [],
         initVal: 0,
         color: "#e83e8c",
-        flg: 1
+        hidden: false
       },
       bittrex: {
         label: "Bittrex(XRP/USD)",
@@ -114,7 +114,7 @@ export default {
         diffTable: [],
         initVal: 0,
         color: "#0084D4",
-        flg: 1
+        hidden: false
       },
       bitfinexBTC: {
         label: "Bitfinex(BTC/USD)",
@@ -123,7 +123,7 @@ export default {
         diffTable: [],
         initVal: 0,
         color: "#4d93c1",
-        flg: 1
+        hidden: false
       },
       coincheckBTC: {
         label: "Coincheck(BTC/JPY)",
@@ -132,18 +132,18 @@ export default {
         diffTable: [],
         initVal: 0,
         color: "#20C2D3",
-        flg: 1
+        hidden: false
       },
 
       label: [],
       flg: [],
       initFlg: {
-        'bitbank': 1,
-        'poloniex': 1,
-        'poloniexBTC': 1,
-        'bittrex': 1,
-        'bitfinexBTC': 1,
-        'coincheckBTC': 1,
+        'bitbank': false,
+        'poloniex': false,
+        'poloniexBTC': false,
+        'bittrex': false,
+        'bitfinexBTC': false,
+        'coincheckBTC': false,
       },
       myTimelineChart: null,
       init: true,
@@ -164,12 +164,12 @@ export default {
       this.bitfinexBTC.diffTable[i] = "0"
       this.coincheckBTC.diffTable[i] = "0"
 
-      this.bitbank.flg = this.flg.bitbank
-      this.poloniex.flg = this.flg.poloniex
-      this.poloniexBTC.flg = this.flg.poloniexBTC
-      this.bittrex.flg = this.flg.bittrex
-      this.bitfinexBTC.flg = this.flg.bitfinexBTC
-      this.coincheckBTC.flg = this.flg.coincheckBTC
+      this.bitbank.hidden = this.flg.bitbank
+      this.poloniex.hidden = this.flg.poloniex
+      this.poloniexBTC.hidden = this.flg.poloniexBTC
+      this.bittrex.hidden = this.flg.bittrex
+      this.bitfinexBTC.hidden = this.flg.bitfinexBTC
+      this.coincheckBTC.hidden = this.flg.coincheckBTC
       
       this.label[i] = 100 - i
     }
@@ -180,20 +180,27 @@ export default {
   methods: {
     setFlg: function () {
       this.flg = {
-        'bitbank': this.bitbank.flg,
-        'poloniex': this.poloniex.flg,
-        'poloniexBTC': this.poloniexBTC.flg,
-        'bittrex': this.bittrex.flg,
-        'bitfinexBTC': this.bitfinexBTC.flg,
-        'coincheckBTC': this.coincheckBTC.flg,
+        'bitbank': this.bitbank.hidden,
+        'poloniex': this.poloniex.hidden,
+        'poloniexBTC': this.poloniexBTC.hidden,
+        'bittrex': this.bittrex.hidden,
+        'bitfinexBTC': this.bitfinexBTC.hidden,
+        'coincheckBTC': this.coincheckBTC.hidden,
       }
       localStorage.setItem('flg', JSON.stringify(this.flg));
     },
-    changeToggle: function (data) {
-      if (data.flg) {
-        data.flg = 0
+    checkHidden: function (data) {
+      if (data === true) {
+        return false
       } else {
-        data.flg = 1
+        return true
+      }
+    },
+    changeToggle: function (data) {
+      if (data.hidden) {
+        data.hidden = false
+      } else {
+        data.hidden = true
       }
       this.setFlg()
       this.calcChart(true)
@@ -236,21 +243,10 @@ export default {
       target.diffTable.shift()
     },
 
-    setChart: function (target) {
+    setChart: function (target, num) {
       const self = this
-      if (target.flg === 1) {
-        self.myTimelineChart.data.datasets.push(
-          {
-            label: target.label,
-            data: target.diffTable,
-            type: 'line',
-            backgroundColor: hexToRgba(target.color, 0),
-            borderColor: hexToRgba(target.color, 70),
-            borderWidth: 2,
-            yAxisID: 'left-y-axis'
-          }
-        )
-      }
+      self.myTimelineChart.data.datasets[num].data = target.diffTable
+      self.myTimelineChart.data.datasets[num].hidden = target.hidden
     },
 
     calcChart: function (update) {
@@ -268,14 +264,13 @@ export default {
       }
 
       // DataのUpdate
-      self.myTimelineChart.data.datasets = []
 
-      self.setChart(self.bitbank)
-      self.setChart(self.poloniex)
-      self.setChart(self.poloniexBTC)
-      self.setChart(self.bittrex)
-      self.setChart(self.bitfinexBTC)
-      self.setChart(self.coincheckBTC)
+      self.setChart(self.bitbank, 0)
+      self.setChart(self.poloniex, 1)
+      self.setChart(self.poloniexBTC, 2)
+      self.setChart(self.bittrex, 3)
+      self.setChart(self.bitfinexBTC, 4)
+      self.setChart(self.coincheckBTC, 5)
 
       self.myTimelineChart.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
         return value + '%'
@@ -304,7 +299,69 @@ export default {
     self.myTimelineChart = new Chart(ctx, {
       type: 'line',
       data: {
-        datasets: [],
+        datasets: [
+          {
+            label: self.bitbank.label,
+            data: self.bitbank.diffTable,
+            type: 'line',
+            backgroundColor: hexToRgba(self.bitbank.color, 0),
+            borderColor: hexToRgba(self.bitbank.color, 70),
+            borderWidth: 2,
+            yAxisID: 'left-y-axis',
+            hidden: self.bitbank.hidden
+          },
+          {
+            label: self.poloniex.label,
+            data: self.poloniex.diffTable,
+            type: 'line',
+            backgroundColor: hexToRgba(self.poloniex.color, 0),
+            borderColor: hexToRgba(self.poloniex.color, 70),
+            borderWidth: 2,
+            yAxisID: 'left-y-axis',
+            hidden: self.poloniex.hidden
+          },
+          {
+            label: self.poloniexBTC.label,
+            data: self.poloniexBTC.diffTable,
+            type: 'line',
+            backgroundColor: hexToRgba(self.poloniexBTC.color, 0),
+            borderColor: hexToRgba(self.poloniexBTC.color, 70),
+            borderWidth: 2,
+            yAxisID: 'left-y-axis',
+            hidden: self.poloniexBTC.hidden
+          },
+          {
+            label: self.bittrex.label,
+            data: self.bittrex.diffTable,
+            type: 'line',
+            backgroundColor: hexToRgba(self.bittrex.color, 0),
+            borderColor: hexToRgba(self.bittrex.color, 70),
+            borderWidth: 2,
+            yAxisID: 'left-y-axis',
+            hidden: self.bittrex.hidden
+          },
+          {
+            label: self.bitfinexBTC.label,
+            data: self.bitfinexBTC.diffTable,
+            type: 'line',
+            backgroundColor: hexToRgba(self.bitfinexBTC.color, 0),
+            borderColor: hexToRgba(self.bitfinexBTC.color, 70),
+            borderWidth: 2,
+            yAxisID: 'left-y-axis',
+            hidden: self.bitfinexBTC.hidden
+          },
+          {
+            label: self.coincheckBTC.label,
+            data: self.coincheckBTC.diffTable,
+            type: 'line',
+            backgroundColor: hexToRgba(self.coincheckBTC.color, 0),
+            borderColor: hexToRgba(self.coincheckBTC.color, 70),
+            borderWidth: 2,
+            yAxisID: 'left-y-axis',
+            hidden: self.coincheckBTC.hidden
+          },
+
+        ],
         labels: self.label,
         borderWidth: 0.5,
       },
@@ -328,7 +385,8 @@ export default {
           line: {
             tension: 0, // ベジェ曲線を無効にする
           }
-        }
+        },
+        maintainAspectRatio: false,
       }
     })
 
