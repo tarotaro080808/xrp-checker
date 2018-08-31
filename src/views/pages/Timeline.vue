@@ -154,7 +154,6 @@ export default {
 
   created() {
     this.flg = JSON.parse(localStorage.getItem('flg')) || this.initFlg;
-    console.log(this.flg)
 
     for (let i=0; i<100; i++) {
       this.bitbank.diffTable[i] = "0"
