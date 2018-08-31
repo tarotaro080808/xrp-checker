@@ -7,6 +7,55 @@
           <div class="small text-muted text-uppercase">Chart Timeline</div>
           <p class="mt-3" v-t="'timeline.description'"></p>
         </b-col>
+
+        <b-col sm="4">
+          <div class="clearfix mt-3">
+            <span class="">{{bitbank.label}}</span>
+            <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
+              <input type="checkbox" class="switch-input" :checked="bitbank.flg" v-on:click="changeToggle(bitbank)">
+              <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+            </label>
+          </div>
+          <div class="clearfix mt-3">
+            <span class="">{{poloniex.label}}</span>
+            <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
+              <input type="checkbox" class="switch-input" :checked="poloniex.flg" v-on:click="changeToggle(poloniex)">
+              <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+            </label>
+          </div>
+          <div class="clearfix mt-3">
+            <span class="">{{bittrex.label}}</span>
+            <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
+              <input type="checkbox" class="switch-input" :checked="bittrex.flg" v-on:click="changeToggle(bittrex)">
+              <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+            </label>
+          </div>
+        </b-col>
+
+        <b-col sm="4">
+          <div class="clearfix mt-3">
+            <span class="">{{poloniexBTC.label}}</span>
+            <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
+              <input type="checkbox" class="switch-input" :checked="poloniexBTC.flg" v-on:click="changeToggle(poloniexBTC)">
+              <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+            </label>
+          </div>
+          <div class="clearfix mt-3">
+            <span class="">{{bitfinexBTC.label}}</span>
+            <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
+              <input type="checkbox" class="switch-input" :checked="bitfinexBTC.flg" v-on:click="changeToggle(bitfinexBTC)">
+              <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+            </label>
+          </div>
+          <div class="clearfix mt-3">
+            <span class="">{{coincheckBTC.label}}</span>
+            <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
+              <input type="checkbox" class="switch-input" :checked="coincheckBTC.flg" v-on:click="changeToggle(coincheckBTC)">
+              <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+            </label>
+          </div>
+        </b-col>
+
         <b-col sm="12" style="margin-top: 30px;">
           <canvas id="myTimelineChart" width="800" height="400"></canvas>
         </b-col>
@@ -21,59 +70,222 @@ import 'firebase/database'
 import BigNumber from 'bignumber.js'
 import { hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
 import Chart from 'chart.js'
+import { Switch as cSwitch } from '@coreui/vue'
 
 export default {
   name: 'timeline',
   components: {
     hexToRgba,
+    cSwitch
   },
   data: function () {
     return {
-      bitbank: 0,
-      poloniex: 0,
-      poloniexBtc: 0,
-      bittrex: 0,
+      bitbank: {
+        label: "Bitbank(XRP/JPY)",
+        now: 0,
+        diff: 0,
+        diffTable: [],
+        initVal: 0,
+        color: "#1ac2a6",
+        flg: 1
+      },
+      poloniex: {
+        label: "Poloniex(XRP/BTC)",
+        now: 0,
+        diff: 0,
+        diffTable: [],
+        initVal: 0,
+        color: "#f86c6b",
+        flg: 1
+      },
+      poloniexBTC: {
+        label: "Poloniex(BTC/USDT)",
+        now: 0,
+        diff: 0,
+        diffTable: [],
+        initVal: 0,
+        color: "#e83e8c",
+        flg: 1
+      },
+      bittrex: {
+        label: "Bittrex(XRP/USD)",
+        now: 0,
+        diff: 0,
+        diffTable: [],
+        initVal: 0,
+        color: "#0084D4",
+        flg: 1
+      },
+      bitfinexBTC: {
+        label: "Bitfinex(BTC/USD)",
+        now: 0,
+        diff: 0,
+        diffTable: [],
+        initVal: 0,
+        color: "#4d93c1",
+        flg: 1
+      },
+      coincheckBTC: {
+        label: "Coincheck(BTC/JPY)",
+        now: 0,
+        diff: 0,
+        diffTable: [],
+        initVal: 0,
+        color: "#20C2D3",
+        flg: 1
+      },
 
-      diff: {
-        bitbank: 0,
-        poloniex: 0,
-        poloniexBtc: 0,
-        bittrex: 0
-      },
-      diffTable: {
-        bitbank: [],
-        poloniex: [],
-        poloniexBtc: [],
-        bittrex: []
-      },
-      initVal: {
-        bitbank: 0,
-        poloniex: 0,
-        poloniexBtc: 0,
-        bittrex: 0
-      },
       label: [],
-
+      flg: [],
+      initFlg: {
+        'bitbank': 1,
+        'poloniex': 1,
+        'poloniexBTC': 1,
+        'bittrex': 1,
+        'bitfinexBTC': 1,
+        'coincheckBTC': 1,
+      },
       myTimelineChart: null,
-
       init: true,
       initDb: true,
-
-      intervalId: undefined
+      intervalId: undefined,
     }
   },
-  methods: {
-    
-  },
+
   created() {
+    this.flg = JSON.parse(localStorage.getItem('flg')) || this.initFlg;
+    console.log(this.flg)
+
     for (let i=0; i<100; i++) {
-      this.diffTable.bitbank[i] = "0"
-      this.diffTable.poloniex[i] = "0"
-      this.diffTable.poloniexBtc[i] = "0"
-      this.diffTable.bittrex[i] = "0"
+      this.bitbank.diffTable[i] = "0"
+      this.poloniex.diffTable[i] = "0"
+      this.poloniexBTC.diffTable[i] = "0"
+      this.bittrex.diffTable[i] = "0"
+      this.bitfinexBTC.diffTable[i] = "0"
+      this.coincheckBTC.diffTable[i] = "0"
+
+      this.bitbank.flg = this.flg.bitbank
+      this.poloniex.flg = this.flg.poloniex
+      this.poloniexBTC.flg = this.flg.poloniexBTC
+      this.bittrex.flg = this.flg.bittrex
+      this.bitfinexBTC.flg = this.flg.bitfinexBTC
+      this.coincheckBTC.flg = this.flg.coincheckBTC
+      
       this.label[i] = 100 - i
     }
+
+    // this.bitbank.flg = this.flg.bitbank ? this.flg.bitbank : 1;
   },
+  
+  methods: {
+    setFlg: function () {
+      this.flg = {
+        'bitbank': this.bitbank.flg,
+        'poloniex': this.poloniex.flg,
+        'poloniexBTC': this.poloniexBTC.flg,
+        'bittrex': this.bittrex.flg,
+        'bitfinexBTC': this.bitfinexBTC.flg,
+        'coincheckBTC': this.coincheckBTC.flg,
+      }
+      localStorage.setItem('flg', JSON.stringify(this.flg));
+    },
+    changeToggle: function (data) {
+      if (data.flg) {
+        data.flg = 0
+      } else {
+        data.flg = 1
+      }
+      this.setFlg()
+      this.calcChart(true)
+    },
+
+    getDatabase: function (target, value) {
+      const self = this
+      if (self.initDb === true) {
+        target.initVal = value
+      }
+      target.now = value
+    },
+
+    getData: function () {
+      const self = this
+      firebase.database().ref('ticker/').on('value', function(snapshot) {
+        let dbData = snapshot.val()
+
+        self.getDatabase(self.bitbank, dbData.bitbank)
+        self.getDatabase(self.poloniex, dbData.poloniex)
+        self.getDatabase(self.poloniexBTC, dbData.poloniexBTC)
+        self.getDatabase(self.bittrex, dbData.bittrex)
+        self.getDatabase(self.bitfinexBTC, dbData.bitfinexBTC)
+        self.getDatabase(self.coincheckBTC, dbData.coincheckBTC)
+
+        if (self.initDb === true) {
+          self.initDb = false
+        }
+      })
+    },
+
+    setData: function (target) {
+      const self = this
+      if (target.initVal === 0 || self.init === true) {
+        target.diff = 0
+      } else {
+        target.diff = target.now / target.initVal * 100 - 100
+      }
+      target.diffTable.push(target.diff)
+      target.diffTable.shift()
+    },
+
+    setChart: function (target) {
+      const self = this
+      if (target.flg === 1) {
+        self.myTimelineChart.data.datasets.push(
+          {
+            label: target.label,
+            data: target.diffTable,
+            type: 'line',
+            backgroundColor: hexToRgba(target.color, 0),
+            borderColor: hexToRgba(target.color, 70),
+            borderWidth: 2,
+            yAxisID: 'left-y-axis'
+          }
+        )
+      }
+    },
+
+    calcChart: function (update) {
+      const self = this
+      if (update === false) {
+        self.setData(self.bitbank)
+        self.setData(self.poloniex)
+        self.setData(self.poloniexBTC)
+        self.setData(self.bittrex)
+        self.setData(self.bitfinexBTC)
+        self.setData(self.coincheckBTC)
+        if (self.init === true) {
+          self.init = false
+        }
+      }
+
+      // DataのUpdate
+      self.myTimelineChart.data.datasets = []
+
+      self.setChart(self.bitbank)
+      self.setChart(self.poloniex)
+      self.setChart(self.poloniexBTC)
+      self.setChart(self.bittrex)
+      self.setChart(self.bitfinexBTC)
+      self.setChart(self.coincheckBTC)
+
+      self.myTimelineChart.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
+        return value + '%'
+      }
+      self.myTimelineChart.update() // チャートの更新
+
+      return true
+    },
+  },
+
   mounted() {
     const self = this
     const format = {
@@ -87,134 +299,12 @@ export default {
     BigNumber.config({DECIMAL_PLACES: 4}) // 小数点2桁
     BigNumber.config({FORMAT: format})
 
-    function getData () {
-      firebase.database().ref('ticker/').on('value', function(snapshot) {
-        let dbData = snapshot.val()
-        // 初回値の保存
-        if (self.initDb === true) {
-          self.initVal.bitbank = dbData.bitbank
-          self.initVal.poloniex = dbData.poloniex
-          self.initVal.poloniexBtc = dbData.poloniexBTC
-          self.initVal.bittrex = dbData.bittrex
-          self.initDb = false
-        }
-
-        // 今回値の保存
-        self.bitbank = dbData.bitbank
-        self.poloniex = dbData.poloniex
-        self.poloniexBtc = dbData.poloniexBTC
-        self.bittrex = dbData.bittrex
-      })
-    }
-    function calcChart () {
-      if (self.init === false) {
-        // 2回目以降
-        if (self.initVal.bitbank === 0) {
-          self.diff.bitbank = 0
-        } else {
-          self.diff.bitbank = self.bitbank / self.initVal.bitbank * 100 - 100
-        }
-
-        if (self.initVal.poloniex === 0) {
-          self.diff.poloniex = 0
-        } else {
-          self.diff.poloniex = self.poloniex / self.initVal.poloniex * 100 - 100
-        }
-
-        if (self.initVal.poloniexBtc === 0) {
-          self.diff.poloniexBtc = 0
-        } else {
-          self.diff.poloniexBtc = self.poloniexBtc / self.initVal.poloniexBtc * 100 - 100
-        }
-
-        if (self.initVal.bittrex === 0) {
-          self.diff.bittrex = 0
-        } else {
-          self.diff.bittrex = self.bittrex / self.initVal.bittrex * 100 - 100
-        }
-      } else {
-
-        // 初回は0を代入
-        self.diff.bitbank = 0
-        self.diff.poloniex = 0
-        self.diff.poloniexBtc = 0
-        self.diff.bittrex = 0
-        self.init = false
-      }
-
-      self.diffTable.bitbank.push(self.diff.bitbank)
-      self.diffTable.bitbank.shift()
-      self.diffTable.poloniex.push(self.diff.poloniex)
-      self.diffTable.poloniex.shift()
-      self.diffTable.poloniexBtc.push(self.diff.poloniexBtc)
-      self.diffTable.poloniexBtc.shift()
-      self.diffTable.bittrex.push(self.diff.bittrex)
-      self.diffTable.bittrex.shift()
-
-      // DataのUpdate
-      self.myTimelineChart.data.datasets[0].data = self.diffTable.bitbank
-      self.myTimelineChart.data.datasets[1].data = self.diffTable.poloniex
-      self.myTimelineChart.data.datasets[2].data = self.diffTable.poloniexBtc
-      self.myTimelineChart.data.datasets[3].data = self.diffTable.bittrex
-      self.myTimelineChart.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
-        return value + '%'
-      }
-      self.myTimelineChart.update() // チャートの更新
-
-      return true
-    }
-
-    function getChart () {
-      if (self.init) {
-        getData()
-        calcChart()
-      } else {
-        calcChart()
-      }
-    }
 
     let ctx = document.getElementById("myTimelineChart").getContext('2d')
     self.myTimelineChart = new Chart(ctx, {
       type: 'line',
       data: {
-        datasets: [
-          {
-            label: 'Bitbank(XRP/JPY)',
-            data: self.diffTable.bitbank,
-            type: 'line',
-            backgroundColor: hexToRgba('#1ac2a6', 0),
-            borderColor: hexToRgba('#1ac2a6', 70),
-            borderWidth: 2,
-            yAxisID: 'left-y-axis'
-          },
-          {
-            label: 'Poloniex(XRP/BTC)',
-            data: self.diffTable.poloniex,
-            type: 'line',
-            backgroundColor: hexToRgba('#f86c6b', 0),
-            borderColor: hexToRgba('#f86c6b', 70),
-            borderWidth: 2,
-            yAxisID: 'left-y-axis',
-            },
-          {
-            label: 'Poloniex(BTC/USDT)',
-            data: self.diffTable.poloniexBtc,
-            type: 'line',
-            backgroundColor: hexToRgba('#e83e8c', 0),
-            borderColor: hexToRgba('#e83e8c', 70),
-            borderWidth: 2,
-            yAxisID: 'left-y-axis',
-          },
-          {
-            label: 'Bittrex(XRP/USD)',
-            data: self.diffTable.bittrex,
-            type: 'line',
-            backgroundColor: hexToRgba('#0084D4', 0),
-            borderColor: hexToRgba('#0084D4', 70),
-            borderWidth: 2,
-            yAxisID: 'left-y-axis',
-          },
-        ],
+        datasets: [],
         labels: self.label,
         borderWidth: 0.5,
       },
@@ -241,6 +331,17 @@ export default {
         }
       }
     })
+
+    function getChart () {
+      if (self.init) {
+        self.getData()
+        self.calcChart(false)
+      } else {
+        self.calcChart(false)
+      }
+    }
+
+
     getChart()
     this.intervalId = setInterval(() => {
       getChart()
