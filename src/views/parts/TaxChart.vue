@@ -144,7 +144,8 @@ export default {
             line: {
               tension: 0, // ベジェ曲線を無効にする
             }
-          }
+          },
+          maintainAspectRatio: false,
         }
       })
     }

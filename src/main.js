@@ -15,14 +15,12 @@ import router from './router'
 import firebase from 'firebase/app'
 import 'firebase/database'
 
-import VueTouch from 'vue-touch'
 import VueAnalytics from 'vue-analytics'
 
 Vue.use(VueAnalytics, {
   id: 'UA-113631042-1',
   router
 })
-Vue.use(VueTouch, {name: 'v-touch'})
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
 

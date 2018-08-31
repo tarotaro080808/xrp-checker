@@ -42,11 +42,6 @@
         </div>
       </AppSidebar>
       <main class="main">
-        <v-touch 
-          class="vtouchobj" 
-          v-on:swiperight="onSwipeRight" 
-          v-bind:swipe-options="{ direction: 'right', threshold: 70 }">
-        <!-- <Breadcrumb :list="list"/> -->
         <template>
           <ol class="breadcrumb">
             <li class="breadcrumb-item">
@@ -56,8 +51,30 @@
         </template>
         <div class="container-fluid">
           <router-view></router-view>
+
+          <b-card>
+            <b-row>
+              <b-col cols="6" sm="4">
+                <span role="menuitem" v-on:click="tabChange(1)" target="_self" class="font-xs dropdown-item"><i class="nav-icon icon-wallet"></i>{{ $t('menu.balanceAsset') }}</span>
+              </b-col>
+              <b-col cols="6" sm="4">
+                <span role="menuitem" v-on:click="tabChange(2)" target="_self" class="font-xs dropdown-item"><i class="nav-icon cui-clipboard icons"></i>{{ $t('menu.transaction') }}</span>
+              </b-col>
+              <b-col cols="6" sm="4">
+                <span role="menuitem" v-on:click="tabChange(5)" target="_self" class="font-xs dropdown-item"><i class="nav-icon cui-puzzle icons"></i>{{ $t('menu.profitEstimate') }}</span>
+              </b-col>
+              <b-col cols="6" sm="4">
+                <span role="menuitem" v-on:click="subpage('timeline')" target="_self" class="font-xs dropdown-item"><i class="nav-icon cui-chart icons"></i>{{ $t('menu.timeline') }}</span>
+              </b-col>
+              <b-col cols="6" sm="4">
+                <span role="menuitem" v-on:click="tabChange(3)" target="_self" class="font-xs dropdown-item"><i class="nav-icon icon-doc"></i>{{ $t('menu.updatePlan') }}</span>
+              </b-col>
+              <b-col cols="6" sm="4">
+                <span role="menuitem" v-on:click="tabChange(4)" target="_self" class="font-xs dropdown-item"><i class="nav-icon icon-doc"></i>{{ $t('menu.termsOfService') }}</span>
+              </b-col>
+            </b-row>
+          </b-card>
         </div>
-        </v-touch>
       </main>
     </div>
     <TheFooter>
@@ -133,20 +150,16 @@ export default {
       if (this.$route.meta.label === 'タイムライン') {
         url = 'timeline'
       }
-      
       if (this.$route.query.q !== undefined) {
         param = "?q="+this.$route.query.q
       }
       if (lang == 'en') {
         // 英語
         res = "/en/" + url + param
-
       } else if (lang == 'de') {
         res = "/de/" + url + param
-
       } else if (lang == 'ja') {
         res = "/" + url + param
-
       } else {
         res = "#"
       }
@@ -164,8 +177,40 @@ export default {
 
     tabChange: function (state) {
       this.$store.commit('setTab', state)
+      let lang
+
+      if (this.$i18n.locale === 'en') {
+        lang = 'en/'
+      } else if (this.$i18n.locale === 'de') {
+        lang = 'de/'
+      } else {
+        lang = ''
+      }
+
       if (this.$route.meta.label === 'タイムライン') {
-        this.$router.push('/')
+        if (this.$route.query.q !== undefined) {
+          this.$router.push('/' + lang + '?q=' + this.$route.query.q)
+        } else {
+          this.$router.push('/' + lang)
+        }
+      }
+    },
+
+    subpage: function (url) {
+      let lang
+
+      if (this.$i18n.locale === 'en') {
+        lang = 'en/'
+      } else if (this.$i18n.locale === 'de') {
+        lang = 'de/'
+      } else {
+        lang = ''
+      }
+
+      if (this.$route.query.q !== undefined) {
+        this.$router.push('/' + lang + url + '?q=' + this.$route.query.q)
+      } else {
+        this.$router.push('/' + lang + url)
       }
     },
     onSwipeRight: function () {
@@ -178,6 +223,9 @@ export default {
 }
 </script>
 <style scoped>
+  .dropdown-item {
+    padding: 10px;
+  }
   .navbar-brand {
     color: #283a71;
     font-weight: bold;
