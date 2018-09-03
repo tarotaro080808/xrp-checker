@@ -1,10 +1,10 @@
 {
-  "name": "@coreui/coreui-free-vue-admin-template",
-  "version": "2.0.0-beta.13",
-  "description": "Open Source Bootstrap Admin Template",
-  "author": "Łukasz Holeczek",
-  "homepage": "http://coreui.io",
-  "copyright": "Copyright 2018 creativeLabs Łukasz Holeczek",
+  "name": "XRP Checker",
+  "version": "1.2.0",
+  "description": "XRP Checker",
+  "author": "tarotaro",
+  "homepage": "https://xrp-checker.com/",
+  "copyright": "Copyright 2018 tarotaro",
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
