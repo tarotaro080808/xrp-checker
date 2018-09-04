@@ -153,13 +153,10 @@ export default {
       if (this.$route.query.q !== undefined) {
         param = "?q="+this.$route.query.q
       }
-      if (lang == 'en') {
-        // 英語
-        res = "/en/" + url + param
-      } else if (lang == 'de') {
-        res = "/de/" + url + param
+      if (lang == 'en' || lang == 'de') {
+        res = `/${lang}/${url}${param}`
       } else if (lang == 'ja') {
-        res = "/" + url + param
+        res = `/${url}${param}`
       } else {
         res = "#"
       }
@@ -189,9 +186,9 @@ export default {
 
       if (this.$route.meta.label === 'タイムライン') {
         if (this.$route.query.q !== undefined) {
-          this.$router.push('/' + lang + '?q=' + this.$route.query.q)
+          this.$router.push({ path: `/${lang}`, query: { q: this.$route.query.q }})
         } else {
-          this.$router.push('/' + lang)
+          this.$router.push({ path: `/${lang}` })
         }
       }
     },
@@ -208,9 +205,9 @@ export default {
       }
 
       if (this.$route.query.q !== undefined) {
-        this.$router.push('/' + lang + url + '?q=' + this.$route.query.q)
+        this.$router.push({ path: `/${lang}${url}`, query: { q: this.$route.query.q }})
       } else {
-        this.$router.push('/' + lang + url)
+        this.$router.push({ path: `/${lang}${url}` })
       }
     },
     onSwipeRight: function () {

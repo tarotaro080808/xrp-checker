@@ -197,9 +197,9 @@ export default {
 
       if (this.$route.meta.label === 'タイムライン') {
         if (this.$route.query.q !== undefined) {
-          this.$router.push('/' + lang + '?q=' + this.$route.query.q)
+          this.$router.push({ path: `/${lang}`, query: { q: this.$route.query.q }})
         } else {
-          this.$router.push('/' + lang)
+          this.$router.push({ path: `/${lang}` })
         }
       }
       if (window.innerWidth < 769) {
@@ -219,9 +219,9 @@ export default {
       }
 
       if (this.$route.query.q !== undefined) {
-        this.$router.push('/' + lang + url + '?q=' + this.$route.query.q)
+        this.$router.push({ path: `/${lang}${url}`, query: { q: this.$route.query.q }})
       } else {
-        this.$router.push('/' + lang + url)
+        this.$router.push({ path: `/${lang}${url}` })
       }
     }
   }

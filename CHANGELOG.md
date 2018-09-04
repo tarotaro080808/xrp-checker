@@ -1,5 +1,8 @@
 ## [vue](./README.md) version `changelog`
 
+##### `v1.2.5`
+- Refactoring code(vue-router)
+
 ##### `v1.2.4`
 - Fixed Chart Timeline
 - Fixed Responsive Table
