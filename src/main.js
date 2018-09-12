@@ -16,6 +16,7 @@ import firebase from 'firebase/app'
 import 'firebase/database'
 
 import VueAnalytics from 'vue-analytics'
+import "./registerServiceWorker";
 
 Vue.use(VueAnalytics, {
   id: 'UA-113631042-1',
