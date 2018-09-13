@@ -6,6 +6,7 @@ import 'core-js/es7/array'
 // import cssVars from 'css-vars-ponyfill'
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import createPersistedState from 'vuex-persistedstate'
 import VueI18n from 'vue-i18n'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
@@ -16,6 +17,11 @@ import firebase from 'firebase/app'
 import 'firebase/database'
 
 import VueAnalytics from 'vue-analytics'
+import "./registerServiceWorker";
+
+// import { vsLoader } from 'vuesax/dist/functions'
+import Vuesax from 'vuesax'
+import 'vuesax/dist/vuesax.css'
 
 Vue.use(VueAnalytics, {
   id: 'UA-113631042-1',
@@ -23,6 +29,7 @@ Vue.use(VueAnalytics, {
 })
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
+Vue.use(Vuesax)
 
 const data = require('./resource.json');
 Vue.use(VueI18n);
@@ -104,6 +111,7 @@ const store = new Vuex.Store({
 
     moons(state) { return state.moons },
   }
+  // plugins: [createPersistedState()]
 })
 
 const getTab = {

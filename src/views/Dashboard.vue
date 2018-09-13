@@ -8,17 +8,26 @@
             <div class="small text-muted text-uppercase">Wallet Settings</div>
           </b-col>
           <b-col sm="12" style="margin-top: 30px;">
-            <form action="">
+            <form @submit.prevent="setWallet">
               <div class="input-group mb-3">
                 <i18n path="message.walletSettingDesctiption" tag="label" class="input-label-wallet text-muted">
                   <mark place="mark" v-t="'message.mark'"></mark>
                   <br place="br">
                 </i18n>
-                <input type="text" class="form-control form-control-lg" name="q" placeholder="Enter your address" aria-label="Enter your address" aria-describedby="" :value="correctWalletAddress">
+                <input v-model="address" type="text" class="form-control form-control-lg" name="q" placeholder="Enter your address" aria-label="Enter your address" aria-describedby="">
                 <div class="input-group-append">
-                  <button class="btn btn-primary btn-lg" type="submit" id="" v-t="'message.btnLabelSubmit'"></button>
+                  <button class="btn btn-primary btn-lg" type="submit" id="" v-t="'message.btnLabelSubmit'" v-on:click="setWallet"></button>
                 </div>
               </div>
+              <b-alert :show="dismissCountDown"
+                dismissible
+                variant="primary"
+                @dismissed="dismissCountDown=0"
+                @dismiss-count-down="countDownChanged"
+                class="animate fadeIn">
+                <span v-t="'message.adding'"></span>
+              </b-alert>
+
             </form>
           </b-col>
         </b-row>
@@ -59,11 +68,14 @@
                   <div class="small text-muted text-uppercase">Wallet Lists</div>
                 </b-col>
                 <b-col sm="12" style="margin-top: 30px;">
-                  <b-row>
+                  <b-row v-if="loadCounter == 100">
                     <template v-for="(value, index) in walletAddress">
                       <b-col cols="12" sm="6" lg="4" :key="value">
                         <b-card :no-body="true">
                           <b-card-body class="p-3 clearfix">
+                            <div class="alert-dismissible">
+                              <button v-if="inLocalStorage(value)" v-on:click="deleteItem(index)" class="close">×</button>
+                            </div>
                             <i class="icon-wallet icons p-3 font-2xl mr-3 float-left" :class="'bg-'+selectColor(index)"></i>
                             <div class="h5 mb-1" :class="'text-'+selectColor(index)">{{ balance[index] }} XRP</div>
                             <div class="text-muted font-weight-bold font-xs text-balance-address">{{ value }}</div>
@@ -71,6 +83,11 @@
                         </b-card>
                       </b-col>
                     </template>
+                  </b-row>
+                  <b-row v-else >
+                    <div class="con-vs-loading">
+                      <div class="vs-loading border"><div class="effect-1 effects"></div><div class="effect-2 effects"></div><div class="effect-3 effects"></div><img src=""><!----></div>
+                    </div>
                   </b-row>
                 </b-col>
               </b-row>
@@ -128,7 +145,7 @@
       </div><!-- tab4 -->
 
       <div v-if="tab === 5">
-        <Tax :totalBalance="totalBalance" />
+        <Tax v-bind:totalBalance="totalBalance" />
       </div><!-- tab5 -->
 
       <!-- モーダルウィンドウ（トランザクション詳細用） -->
@@ -169,10 +186,17 @@ export default {
   data: function () {
     return {
       // Wallet
-      walletAddress: '',
+      walletAddress: [],
       walletAddressLen: '',
       getBalanceFin: false,
       loopCnt: 0,
+
+      // input field
+      address: null,
+
+      // Local Storage
+      localStorageWalletAddress: [],
+      localStorageWalletAddressLen: 0,
 
       correctWalletAddress: '',
       connection: null,
@@ -198,6 +222,12 @@ export default {
         hash: null,
         detail: null
       },
+
+      // Alert
+      dismissSecs: 1.5,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
+
     }
   },
   computed: {
@@ -222,66 +252,137 @@ export default {
       return new BigNumber(value, 10).toFormat()
     }
   },
-  mounted () {
+  created () {
+    // Local Storageから取得
+    this.localStorageWalletAddress = JSON.parse(localStorage.getItem('walletAddress')) || [];
+    this.localStorageWalletAddressLen = this.localStorageWalletAddress.length
+
+
+    // クエリから取得
     var walletList = this.$route.query.q
     if (walletList !== undefined) {
       walletList = this.escape_html(walletList)
       walletList = walletList.replace(/^\s+/,"")
       walletList = walletList.replace(/\s+$/,"")
       var splitWalletList = walletList.split(' ')
-      this.walletAddressLen = splitWalletList.length
-      this.walletAddress = splitWalletList
+      this.walletAddressLen = this.localStorageWalletAddressLen + splitWalletList.length
+      // Local Strageのデータと結合
+      this.walletAddress = this.localStorageWalletAddress.concat(splitWalletList)
       // inputの初期値として
       this.correctWalletAddress = this.escape_html(walletList)
+    } else {
+      // クエリが存在しない場合
+      this.walletAddressLen = this.localStorageWalletAddressLen
+      this.walletAddress = this.localStorageWalletAddress
+      this.correctWalletAddress = ''
     }
-    var self = this
    
     // Connect to RippleClient
-    if (this.walletAddress !== undefined) { // クエリ自体がない場合
-      // プログレスバー表示
-      this.setProgressState(true)
-      self.loadCounter = 10
-      new RippleClient('wss://s2.ripple.com').then((RippleServerConnection) => {
-        self.connection = RippleServerConnection
-      }).then( () => {
-        var resultData = []
-        var localBalance
-        self.walletAddress.forEach(function (value, key) {
-          if (value.indexOf('r') === 0) {  // rから始まる場合
-            self.loadCounter = self.loadCounter + (100 - parseInt(self.loadCounter))*0.4
-            self.getBalance(key)
-            self.loadCounter = self.loadCounter + (100 - parseInt(self.loadCounter))*0.4
-            self.getTransaction(key, 10, false)
-            self.getTransactionChart(key, 100, false)
-          } else if (self.isNumber(value)) {
-            BigNumber.config({DECIMAL_PLACES: 2}) // 小数点2桁
-            var format = {
-              decimalSeparator: '.',
-              groupSeparator: ',',
-              groupSize: 3,
-              secondaryGroupSize: 0,
-              fractionGroupSeparator: ' ',
-              fractionGroupSize: 0
-            }
-            BigNumber.config({FORMAT: format})
-            self.$data.balance[key] = new BigNumber(value, 10).toFormat()
-            self.$data.totalBalance += parseFloat(value)
-            self.$data.loopCnt+=1;
-            if (self.loopCnt == self.walletAddressLen) {
-              self.$data.getBalanceFin = true
-            }
-          }
-        })
-      }).catch((error) => {
-        self.loadCounter = 100
-        self.walletAddress = ''
-        self.correctWalletAddress = ''
-      }).finally( () => {
-        self.loadCounter = 100
-      })
-    }
+    this.connectRippleClient(this.walletAddress)
   },
   methods: {
+    setWallet: function () {
+      let ls = JSON.parse(localStorage.getItem('walletAddress')) || [];
+      let set = new Set(ls)
+      
+      if (set.has(this.address) === false && this.address !== null && this.address !== undefined) {
+        console.log('存在しない')
+        set.add(this.address) // 重複を無視
+        let list = Array.from(set)
+        // ls = ls.filter((x, i, self) => self.indexOf(x) === i);
+        localStorage.setItem('walletAddress', JSON.stringify(list));
+
+        this.walletAddressLen = this.walletAddressLen + 1
+        this.walletAddress.push(this.address)
+
+        this.connectRippleClient(this.walletAddress)
+        this.dismissCountDown = this.dismissSecs
+
+      } else {
+      }
+    },
+    // バツボタン押下時
+    deleteItem: function (value) {
+      let ls = JSON.parse(localStorage.getItem('walletAddress')) || [];
+      ls.splice(value, 1)
+      localStorage.setItem('walletAddress', JSON.stringify(ls));
+   
+      this.walletAddress.splice(value, 1)
+
+      // this.balance.splice(value, 1)
+      this.connectRippleClient(this.walletAddress)
+    },
+    // カウントダウン開始
+    countDownChanged: function (dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+
+
+    // LocalStorageに入っているアドレスかチェック
+    inLocalStorage: function (value) {
+      console.log(value)
+      let ls = JSON.parse(localStorage.getItem('walletAddress')) || [];
+      if (ls.indexOf(value) == -1) {
+        // 存在しない
+        return false
+      }
+      // 存在する
+      return true
+    },
+
+
+
+    connectRippleClient: function (arrAddress) {
+      const self = this
+      if (arrAddress !== undefined) { // クエリ自体がない場合
+        // プログレスバー表示
+        this.setProgressState(true)
+        self.loadCounter = 10
+        new RippleClient('wss://s2.ripple.com').then((RippleServerConnection) => {
+          self.connection = RippleServerConnection
+        }).then( () => {
+          self.$data.balance = []
+          self.$data.totalBalance = 0
+          self.$data.loopCnt = 0;
+
+          arrAddress.forEach(function (value, key) {
+            if (value.indexOf('r') === 0) {  // rから始まる場合
+              self.loadCounter = self.loadCounter + (100 - parseInt(self.loadCounter))*0.4
+              self.getBalance(key)
+              self.loadCounter = self.loadCounter + (100 - parseInt(self.loadCounter))*0.4
+              self.getTransaction(key, 10, false)
+              self.getTransactionChart(key, 100, false)
+            } else if (self.isNumber(value)) {
+              BigNumber.config({DECIMAL_PLACES: 2}) // 小数点2桁
+              var format = {
+                decimalSeparator: '.',
+                groupSeparator: ',',
+                groupSize: 3,
+                secondaryGroupSize: 0,
+                fractionGroupSeparator: ' ',
+                fractionGroupSize: 0
+              }
+              BigNumber.config({FORMAT: format})
+              self.$data.balance[key] = new BigNumber(value, 10).toFormat()
+              self.$data.totalBalance += parseFloat(value)
+              self.$data.loopCnt+=1;
+              if (self.loopCnt == self.walletAddressLen) {
+                self.$data.getBalanceFin = true
+              }
+            }
+          })
+        }).catch((error) => {
+          self.loadCounter = 100
+          self.walletAddress = ''
+          self.correctWalletAddress = ''
+        }).finally( () => {
+          self.loadCounter = 100
+        })
+      }
+
+    },
+
+    
 
     isNumber: function (numVal){
       // チェック条件パターン
@@ -650,4 +751,65 @@ export default {
       word-break: break-all;
     }
   }
+
+.con-vs-loading {
+  position: relative;
+}
+  .con-vs-loading .vs-loading.border {
+    border: 1px solid #f0f0f0;
+  }
+  .con-vs-loading .vs-loading {
+    position: relative;
+    width: 55px;
+    height: 55px;
+    display: block;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border: 3px solid transparent;
+}
+.con-vs-loading .vs-loading.border .effect-1, .con-vs-loading .vs-loading.border .effect-2, .con-vs-loading .vs-loading.border .effect-3 {
+    border: 1px solid transparent;
+    border-left: 1px solid #1f74ff;
+}
+.con-vs-loading .vs-loading.border .effect-1, .con-vs-loading .vs-loading.default .effect-1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-left: 3px solid #1f74ff;
+    -webkit-animation: rotate 1s ease infinite;
+    animation: rotate 1s ease infinite;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.con-vs-loading .vs-loading.border .effect-2, .con-vs-loading .vs-loading.default .effect-2 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-left: 3px solid #1f74ff;
+    -webkit-animation: rotateOpacity 1s ease infinite .1s;
+    animation: rotateOpacity 1s ease infinite .1s;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.con-vs-loading .vs-loading.border .effect-3, .con-vs-loading .vs-loading.default .effect-3 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 3px solid transparent;
+    border-left: 3px solid #1f74ff;
+    -webkit-animation: rotateOpacity 1s ease infinite .2s;
+    animation: rotateOpacity 1s ease infinite .2s;
+    border-radius: 50%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.con-vs-loading .vs-loading .effects {
+    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
+}
 </style>
