@@ -46,7 +46,7 @@
         </b-row>
       </b-card>
 
-      <TaxTable v-if="lists.length && totalBalanceFlg" :value="lists" :totalBalanceLocal="totalBalanceLocal" ref="taxtable1" />
+      <TaxTable v-if="totalBalanceFlg" :value="lists" :totalBalanceLocal="totalBalanceLocal" ref="taxtable1" />
 
     </div>
   </div>
@@ -101,8 +101,7 @@ export default {
     // リセットボタンを押すと、listsの結果をクリアするとともに、localstrageからもデータを削除する
     // https://qiita.com/shingorow/items/97c265d4cab33cb13b6c
 
-    this.lists = JSON.parse(localStorage.getItem('lists')) || [];
-
+    
     BigNumber.config({DECIMAL_PLACES: 2}) // 小数点2桁
     const format = {
       decimalSeparator: '.',

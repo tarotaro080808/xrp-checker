@@ -13,7 +13,7 @@
     },
     "message": {
       "walletSetting": "ウォレット設定",
-      "walletSettingDesctiption": "Rippleアドレス（rから始まる）または数量を半角で入力してください。{br}複数のアドレスをセットする場合は{mark}で区切って入力ください。",
+      "walletSettingDesctiption": "Rippleアドレス（rから始まる）、または数量を半角で入力してください。{br}アドレスの登録を削除する場合はウォレット一覧から×ボタンを押してください。",
       "mark": "半角スペース",
       "btnLabelSubmit": "設定",
       "gettingWalletBalance": "ウォレット残高取得中...",
@@ -25,11 +25,12 @@
       "assetManagement": "資産管理",
       "amount": "数量",
       "transactionHistory": "トランザクション履歴",
-      "loadAdditional": "追加読み込み"
+      "loadAdditional": "追加読み込み",
+      "adding": "アドレスを登録中です"
     },
     "info": {
       "termsOfService1": "当サービスは、Ripple社と各仮想通貨取引所の提供しているAPIを活用しております。{br}APIが使えない場合（サーバーダウン含む）当サービスも利用不可となりますので予めご了承ください。",
-      "termsOfService2": "ウォレットアドレスのデータベース等への保管はしておりません。また、個人を特定できる情報の一切を取得しておりません。",
+      "termsOfService2": "ウォレットアドレスは管理者では一切保管しておりません。また、個人を特定できる情報は一切取得しておりません。",
       "termsOfService3": "Google Analyticsによるアクセス解析を導入しております。"
     },
     "memo": {
@@ -93,7 +94,7 @@
     },
     "message": {
       "walletSetting": "Wallet Settings",
-      "walletSettingDesctiption": "Please enter Ripple address (starting with r) or quantity.{br}In order to set multiple addresses, you can enter by separating with a {mark}",
+      "walletSettingDesctiption": "Please enter Ripple address (starting with r) or quantity.",
       "mark": "space",
       "btnLabelSubmit": "Add",
       "gettingWalletBalance": "Loading...",
@@ -105,7 +106,8 @@
       "assetManagement": "Asset Management (only JPY)",
       "amount": "Amount",
       "transactionHistory": "Transaction History",
-      "loadAdditional": "Load additional"
+      "loadAdditional": "Load additional",
+      "adding": "Registering address"
     },
     "info": {
       "termsOfService1": "This service utilizes API provided by Ripple and each virtual currency exchange.{br}When API can not be used (Including server down) Restriction on use of this service will occur.",
@@ -172,7 +174,7 @@
     }, 
     "message": {
       "walletSetting": "Wallet Einstellungen", 
-      "walletSettingDesctiption": "Bitte geben Sie hier die Ripple-Adresse  ein (beginnend mit r) oder die Stückzahl. {Br} Um mehrere Adressen zu  setzen, können Sie diese mit einem {mark} trennen", 
+      "walletSettingDesctiption": "Bitte geben Sie hier die Ripple-Adresse  ein (beginnend mit r) oder die Stückzahl.", 
       "mark": "Leerschlag", 
       "btnLabelSubmit": "Hinzufügen", 
       "gettingWalletBalance": "Lädt...", 
@@ -184,7 +186,8 @@
       "assetManagement": "Asset Management (nur JPY)", 
       "amount": "Betrag", 
       "transactionHistory": "Transaktionshistorie", 
-      "loadAdditional": "Zusätzliche Werte laden" 
+      "loadAdditional": "Zusätzliche Werte laden",
+      "adding": "Adresse registrieren"
     },
     "info": {
       "termsOfService1": "Dieser Dienst nutzt die von Ripple und jedem  virtuellen Währungsexchange zur Verfügung gestellten APIs. {br} Wenn die  API nicht verwendet werden kann (einschließlich Serverausfall), wird  die Verwendung dieses Dienstes eingeschränkt.", 

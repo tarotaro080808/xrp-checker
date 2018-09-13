@@ -19,12 +19,17 @@ import 'firebase/database'
 import VueAnalytics from 'vue-analytics'
 import "./registerServiceWorker";
 
+// import { vsLoader } from 'vuesax/dist/functions'
+import Vuesax from 'vuesax'
+import 'vuesax/dist/vuesax.css'
+
 Vue.use(VueAnalytics, {
   id: 'UA-113631042-1',
   router
 })
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
+Vue.use(Vuesax)
 
 const data = require('./resource.json');
 Vue.use(VueI18n);
