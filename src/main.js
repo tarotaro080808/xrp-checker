@@ -6,6 +6,7 @@ import 'core-js/es7/array'
 // import cssVars from 'css-vars-ponyfill'
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import createPersistedState from 'vuex-persistedstate'
 import VueI18n from 'vue-i18n'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App'
@@ -105,6 +106,7 @@ const store = new Vuex.Store({
 
     moons(state) { return state.moons },
   }
+  // plugins: [createPersistedState()]
 })
 
 const getTab = {
