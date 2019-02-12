@@ -209,7 +209,7 @@ export default {
   created() {
     this.flg = JSON.parse(localStorage.getItem('flg')) || this.initFlg;
 
-    for (let i=0; i<100; i++) {
+    for (let i=0; i<200; i++) {
       this.bitbank.diffTable[i] = "0"
       this.poloniex.diffTable[i] = "0"
       this.poloniexBTC.diffTable[i] = "0"
@@ -230,7 +230,7 @@ export default {
       this.binance.hidden = this.flg.binance
       this.bitfinex.hidden = this.flg.bitfinex
       
-      this.label[i] = 100 - i
+      this.label[i] = 200 - i
     }
 
     // this.bitbank.flg = this.flg.bitbank ? this.flg.bitbank : 1;
@@ -504,7 +504,7 @@ export default {
     getChart()
     this.intervalId = setInterval(() => {
       getChart()
-    }, 1000 * 5)
+    }, 1000 * 1)
   },
   beforeDestroy () {
     clearInterval(this.intervalId)
