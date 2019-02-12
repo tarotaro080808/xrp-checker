@@ -66,7 +66,7 @@
         <template v-else-if="item.tab == 'donate'">
           <li v-bind:key="index" data-v-1282947e="" class="nav-item">
             <div data-v-1282947e="">
-              <a class="nav-link" :href="item.url" target="_blank">
+              <a class="nav-link" :href="item.url" target="_blank" rel="noopener noreferrer">
                 <i class="nav-icon cui-user icons"></i> {{ $t('menu.donate') }}
               </a>
             </div>
