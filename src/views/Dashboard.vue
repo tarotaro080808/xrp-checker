@@ -286,7 +286,6 @@ export default {
       let set = new Set(ls)
       
       if (set.has(this.address) === false && this.address !== null && this.address !== undefined) {
-        console.log('存在しない')
         set.add(this.address) // 重複を無視
         let list = Array.from(set)
         // ls = ls.filter((x, i, self) => self.indexOf(x) === i);
@@ -320,7 +319,6 @@ export default {
 
     // LocalStorageに入っているアドレスかチェック
     inLocalStorage: function (value) {
-      console.log(value)
       let ls = JSON.parse(localStorage.getItem('walletAddress')) || [];
       if (ls.indexOf(value) == -1) {
         // 存在しない

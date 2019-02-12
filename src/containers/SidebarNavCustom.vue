@@ -195,15 +195,15 @@ export default {
         lang = ''
       }
 
+      if (window.innerWidth < 769) {
+        this.toggle();
+      }
       if (this.$route.meta.label === 'タイムライン') {
         if (this.$route.query.q !== undefined) {
           this.$router.push({ path: `/${lang}`, query: { q: this.$route.query.q }})
         } else {
           this.$router.push({ path: `/${lang}` })
         }
-      }
-      if (window.innerWidth < 769) {
-        this.toggle();
       }
     },
 
