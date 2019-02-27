@@ -62,6 +62,9 @@ const store = new Vuex.Store({
     bittrex: null,
     bittrexPrice: null,
 
+    coinbase: null,
+    coinbasePrice: null,
+
     USD: null,
     EUR: null,
 
@@ -83,6 +86,9 @@ const store = new Vuex.Store({
     setBittrex (state, payload) { state.bittrex = payload },
     setBittrexPrice (state, payload) { state.bittrexPrice = payload },
 
+    setCoinbase (state, payload) { state.coinbase = payload },
+    setCoinbasePrice (state, payload) { state.coinbasePrice = payload },
+
     setUSD (state, payload) { state.USD = payload },
     setEUR (state, payload) { state.EUR = payload },
 
@@ -102,6 +108,8 @@ const store = new Vuex.Store({
     poloniexBTC(state) { return state.poloniexBTC },
     bittrex(state) { return state.bittrex },
     bittrexPrice(state) { return state.bittrexPrice },
+    coinbase(state) { return state.coinbase },
+    coinbasePrice(state) { return state.coinbasePrice },
 
     USD(state) { return state.USD },
     EUR(state) { return state.EUR },

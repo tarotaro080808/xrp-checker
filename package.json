@@ -1,8 +1,8 @@
 {
   "name": "xrp-checker",
-  "version": "1.2.0",
+  "version": "1.2.6",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 4000",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit",

@@ -1,5 +1,8 @@
 ## [vue](./README.md) version `changelog`
 
+##### `v1.2.6`
+- Add coinbase Pro (XRP/USD) for wallet balance and chart timeline.
+
 ##### `v1.2.5`
 - Refactoring code(vue-router)
 

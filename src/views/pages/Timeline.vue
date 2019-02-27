@@ -24,6 +24,13 @@
             </label>
           </div>
           <div class="clearfix mt-2">
+            <span class="">{{coinbaseUSD.label}}</span>
+            <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
+              <input type="checkbox" class="switch-input" :checked="checkHidden(coinbaseUSD.hidden)" v-on:click="changeToggle(coinbaseUSD)">
+              <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+            </label>
+          </div>
+          <div class="clearfix mt-2">
             <span class="">{{coincheck.label}}</span>
             <label class="float-right switch switch-sm switch-pill switch-label switch-success mr-2">
               <input type="checkbox" class="switch-input" :checked="checkHidden(coincheck.hidden)" v-on:click="changeToggle(coincheck)">
@@ -185,6 +192,15 @@ export default {
         color: "#21608a",
         hidden: false
       },
+      coinbaseUSD: {
+        label: "Coinbase(XRP/USD)",
+        now: 0,
+        diff: 0,
+        diffTable: [],
+        initVal: 0,
+        color: "#2b71b1",
+        hidden: false
+      },
 
       label: [],
       flg: [],
@@ -198,6 +214,7 @@ export default {
         'coincheck': false,
         'binance': false,
         'bitfinex': false,
+        'coinbaseUSD': false,
       },
       myTimelineChart: null,
       init: true,
@@ -209,7 +226,7 @@ export default {
   created() {
     this.flg = JSON.parse(localStorage.getItem('flg')) || this.initFlg;
 
-    for (let i=0; i<200; i++) {
+    for (let i=0; i<100; i++) {
       this.bitbank.diffTable[i] = "0"
       this.poloniex.diffTable[i] = "0"
       this.poloniexBTC.diffTable[i] = "0"
@@ -219,6 +236,7 @@ export default {
       this.coincheck.diffTable[i] = "0"
       this.binance.diffTable[i] = "0"
       this.bitfinex.diffTable[i] = "0"
+      this.coinbaseUSD.diffTable[i] = "0"
 
       this.bitbank.hidden = this.flg.bitbank
       this.poloniex.hidden = this.flg.poloniex
@@ -229,8 +247,9 @@ export default {
       this.coincheck.hidden = this.flg.coincheck
       this.binance.hidden = this.flg.binance
       this.bitfinex.hidden = this.flg.bitfinex
+      this.coinbaseUSD.hidden = this.flg.coinbaseUSD
       
-      this.label[i] = 200 - i
+      this.label[i] = 100 - i
     }
 
     // this.bitbank.flg = this.flg.bitbank ? this.flg.bitbank : 1;
@@ -248,6 +267,7 @@ export default {
         'coincheck': this.coincheck.hidden,
         'binance': this.binance.hidden,
         'bitfinex': this.bitfinex.hidden,
+        'coinbaseUSD': this.coinbaseUSD.hidden,
       }
       localStorage.setItem('flg', JSON.stringify(this.flg));
     },
@@ -290,6 +310,7 @@ export default {
         self.getDatabase(self.coincheck, dbData.coincheck)
         self.getDatabase(self.binance, dbData.binance)
         self.getDatabase(self.bitfinex, dbData.bitfinex)
+        self.getDatabase(self.coinbaseUSD, dbData.coinbaseXRPUSD)
 
         if (self.initDb === true) {
           self.initDb = false
@@ -326,6 +347,7 @@ export default {
         self.setData(self.coincheck)
         self.setData(self.binance)
         self.setData(self.bitfinex)
+        self.setData(self.coinbaseUSD)
         if (self.init === true) {
           self.init = false
         }
@@ -342,6 +364,7 @@ export default {
       self.setChart(self.coincheck, 6)
       self.setChart(self.binance, 7)
       self.setChart(self.bitfinex, 8)
+      self.setChart(self.coinbaseUSD, 9)
 
       self.myTimelineChart.options.scales.yAxes[0].ticks.callback = function(value, index, values) {
         return value + '%'
@@ -461,7 +484,16 @@ export default {
             yAxisID: 'left-y-axis',
             hidden: self.bitfinex.hidden
           },
-
+          {
+            label: self.coinbaseUSD.label,
+            data: self.coinbaseUSD.diffTable,
+            type: 'line',
+            backgroundColor: hexToRgba(self.coinbaseUSD.color, 0),
+            borderColor: hexToRgba(self.coinbaseUSD.color, 70),
+            borderWidth: 2,
+            yAxisID: 'left-y-axis',
+            hidden: self.coinbaseUSD.hidden
+          },
         ],
         labels: self.label,
         borderWidth: 0.5,
@@ -504,10 +536,16 @@ export default {
     getChart()
     this.intervalId = setInterval(() => {
       getChart()
-    }, 1000 * 1)
+    }, 1000 * 5)
   },
   beforeDestroy () {
     clearInterval(this.intervalId)
   }
 }
 </script>
+
+<style scoped>
+.switch-label.switch-sm {
+  width: 42px;
+}
+</style>
